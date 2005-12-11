@@ -1,0 +1,181 @@
+=pod
+
+=head1 NAME
+
+Class::Clone - Create a subclass or a copy of a class on-the-fly
+
+=head1 SYNOPSIS
+
+  # Another::Package gets its methods from Some::Package,
+  # but to SUPER:: in Another::Pacakge will go to Another::Package::Super,
+  package Some::Package::Super;
+  sub method {
+    my $class = shift;
+    return "method";
+  }
+  
+  package Some::Package;
+  sub method {
+    my $class = shift;
+    return $class->SUPER::method . "ical";
+  }
+  
+  package Another::Package::Super;
+  sub method {
+    return "naut";
+  }
+
+  package main;
+  use Class::Clone qw(class_clone);
+  use Test::More qw(no_plan);
+
+  @Some::Package::ISA = qw(Some::Package::Super);
+  class_clone('Some::Package', 'Another::Package');
+
+  @Another::Package::ISA = qw(Another::Package::Super);
+  
+  is(
+    Another::Package->method,
+    'nautical',
+    "Another::Package's namespace is completely independant of Some::Package"
+  );
+
+=head1 DESCRIPTION
+
+B<Class::Clone> makes an exact clone of an existing class, whose variables
+and subroutines are not in any way tied back to the existing class or it's
+parent classes. If you change any variables in the clone, the changes don't
+affect the parent class. When a cloned subroutine has a call like
+
+  $self->SUPER::do_something()
+
+the clone class's parents are traversed. This module is called C<Class::Clone>
+because this behaviour lends itself well to creating certain types of
+factory / polymorph classes.
+
+(This is in contrast to importing variable or subroutine references from other
+packages, typically via 'Exporter'. When you do that, your copy B<is> the
+original copy, so changing inherited variables affects your parent packages, and
+C<SUPER::> will call the B<original> parent's parent, even if you change your
+C<@ISA>)
+
+=head1 USAGE
+
+Two functions are available for export from C<Class::Clone>:
+
+=over
+
+=item class_clone($from, $to[, %what])
+
+Copy all of the symbols in package C<$from> into package C<$to>.
+If a symbol already exists in C<$to>, it is not overwritten.
+
+C<%what> is optional; if it is not specified, arrays, hashes, scalars,
+and code are cloned into C<$to>. If it is specified, the keys specify
+what to copy:
+
+=over
+
+=item ARRAY
+
+=item HASH
+
+=item SCALAR
+
+=item CODE
+
+=back
+
+The values specify how to copy that symbol table:
+
+=over
+
+=item clone
+
+Make an exact duplicate in C<$to>.
+
+If this is a subroutine (C<CODE>), an exact duplicate will only be made if the
+subroutine belongs to the package in C<$from>, unless C<$from>'s subroutine is
+an import itself, or comes from XS code. In those cases, the subroutine
+will be imported into C<$to>. 
+
+=item import
+
+Import the reference into C<$to>.
+
+=back
+
+If a C<false> value is specified (or the key is not specified at all), no
+copy is done.
+
+=item class_subclass($from, $to[, %what])
+
+Generate package C<$to> as a pure subclass of C<$from>. If C<%what> is
+not specified, no cloning is done. If it is specified, it should be in
+the same format as C<%what> in C<class_clone>.
+
+=item class_clone_code($from, $to[, %what])
+
+C<class_clone> creates it's subclass inside an eval().
+C<class_clone_code> returns an array containing the code that would be
+run in this eval() without executing it. You may want to use this method
+in a factory scenario where you want to add some of your own methods into
+the cloned class.
+
+=back
+
+=head1 HOW SUBROUTINES ARE COPIED
+
+When a subroutine is cloned, it is deparsed (with L<B::Deparse>), then
+eval()'ed into the destination package. This is B<slow> and potentially
+B<troublesome>, but in most cases it does work and the destination
+subroutine's C<SUPER::> will be based off of the destination package.
+Also, global variables mentioned in the subroutine will refer to globals
+in the destination package, B<not> the source. Watch out for this; in order
+for the cloned subroutine to work, you will have to clone, import, or specify
+all of those variables as well.
+
+=head1 BUGS
+
+This is B<highly> experimental and may not work the way you want or the way
+I want.
+
+=over
+
+=item Some subroutines may not be copyable.
+
+The fact that they are deparsed and then re-eval()ed is problematic at best.
+Problems with the deparsing or global variables might make a sub uncopyable.
+I'm concerned that FATAL warnings might cause problems in some cases but I
+haven't run into this yet.
+
+=item The copying of subroutines is B<extremely> inefficient.
+
+There might be some better way like directly copying the bytecode, but I
+haven't figured that out yet.
+
+=item There's currently no way to pick what variables to clone or reference.
+
+=item Ancestor checks are done for C<sub>s, but not variables.
+
+When you ask to clone a subroutine, it is only cloned if the subroutine
+actually lives in that package; if it was imported from elsewhere, you get
+an import as well. It would be useful to have the same behaviour for
+the other data types.
+
+=back
+
+=head1 SEE ALSO
+
+L<Exporter>, L<Clone>, L<SUPER>, L<Symbol::Table>
+
+=head1 AUTHOR
+
+Tyler "Crackerjack" MacDonald <japh@crackerjack.net>
+
+=head1 LICENSE
+
+Copyright 2005 Tyler MacDonald.
+This is free software; you may redistribute it under the same terms as perl itself.
+
+=cut

@@ -1,0 +1,19 @@
+Changes
+lib/Class/Clone.pm
+lib/Class/Clone.pod
+Makefile.PL
+MANIFEST			This list of files
+README
+t/Class-Clone-Synopsis.t
+t/Class-Clone.t
+t/tlib/Class/Clone/Test.pm
+t/tlib/Class/Clone/Test1.pm
+t/tlib/Class/Clone/Test2.pm
+t/tlib/Class/Clone/TestA.pm
+t/tlib/Class/Clone/TestB.pm
+t/tlib/Class/Clone/TestBH.pm
+t/tlib/Class/Clone/TestBI.pm
+t/tlib/Class/Clone/TestX.pm
+t/tlib/Class/Clone/TestY.pm
+t/tlib/Class/Clone/TestZ.pm
+META.yml                                 Module meta-data (added by MakeMaker)
