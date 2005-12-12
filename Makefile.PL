@@ -5,7 +5,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'Class::Clone',
     VERSION_FROM      => 'lib/Class/Clone.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+    PREREQ_PM         => {
+        'Symbol::Table'     =>  1.01,
+    },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Class/Clone.pod', # retrieve abstract from module
        AUTHOR         => 'Tyler MacDonald <japh@crackerjack.net>') : ()),

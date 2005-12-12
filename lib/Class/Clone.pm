@@ -10,7 +10,7 @@ use Carp;
 use Exporter qw(import);
 use File::Temp q(tempfile);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our @EXPORT_OK = qw(class_clone class_clone_code class_subclass);
 our %default_rules = (
     'ARRAY'     =>  'copy',

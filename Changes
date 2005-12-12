@@ -1,5 +1,9 @@
 Revision history for Perl extension Class::Clone.
 
+0.02  Mon Dec 12 10:23:00 2005
+	- Documented special @ISA behaviour
+	- Fixed Makefile.PL (we depend on Symbol::Table!)
+
 0.01  Wed Dec  7 21:36:27 2005
 	- original version; created by h2xs 1.23 with options
 		-AXP -b 5.6.0 Class::Clone

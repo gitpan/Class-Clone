@@ -69,6 +69,9 @@ Two functions are available for export from C<Class::Clone>:
 
 Copy all of the symbols in package C<$from> into package C<$to>.
 If a symbol already exists in C<$to>, it is not overwritten.
+The variable C<@ISA> is a special case: If the class you are copying to
+already has an C<@ISA>, the C<@ISA> in the class you are
+copying from will be appended to that.
 
 C<%what> is optional; if it is not specified, arrays, hashes, scalars,
 and code are cloned into C<$to>. If it is specified, the keys specify
