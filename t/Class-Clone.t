@@ -141,6 +141,66 @@ is(Class::Clone::TestB->zoo, 'nefrtari', 'TestB has its zoo');
 is(Class::Clone::TestZ->zoo, 'fcuk', 'TestZ has its zoo');
 is(Class::Clone::TestZB->zoo, 'fcuk', 'TestZBs zoo follows TestZs ISA');
 
+diag('Copy vs. Clone vs. Closures');
+is(
+    class_clone(
+        'Class::Clone::TestB', 'Class::Clone::TestB_Copy',
+        ARRAY => 'copy', CODE => 'copy', SCALAR => 'copy', HASH => 'copy'
+    ),
+    'Class::Clone::TestB_Copy',
+    'Copied ARRAY from TestB to TestB_Copy'
+);
+is_deeply(
+    Class::Clone::TestB->closure->(),
+    Class::Clone::TestB_Copy->closure->(),
+    'Contents of array match'
+);
+is(
+    scalar(Class::Clone::TestB->closure->()->[0]),
+    scalar(Class::Clone::TestB_Copy->closure->()->[0]),
+    'Copy has the same reference in array'
+);
+is(
+    scalar($Class::Clone::TestB::roo[1]),
+    scalar($Class::Clone::TestB_Copy::roo[1]),
+    'Closure in array is the same'
+);
+is(
+    scalar($Class::Clone::TestB_Copy::roo[1]->()),
+    scalar(\$Class::Clone::TestB::foo),
+    'Closure in array returns original packages variable'
+);
+is(
+    class_clone(
+        'Class::Clone::TestB', 'Class::Clone::TestB_Clone',
+        ARRAY => 'clone', CODE => 'clone', SCALAR => 'clone', HASH => 'clone'
+    ),
+    'Class::Clone::TestB_Clone',
+    'Cloned ARRAY from TestB to TestB_Clone'
+);
+is_deeply(
+    Class::Clone::TestB->closure->(),
+    Class::Clone::TestB_Clone->closure->(),
+    'Contents of array match'
+);
+isnt(
+    scalar(Class::Clone::TestB->closure->()->[0]),
+    scalar(Class::Clone::TestB_Clone->closure->()->[0]),
+    'Clone has a different reference in array'
+);
+TODO: {
+    local $TODO = "Can't make a clone of an anonymous sub inside another data type yet";
+    isnt(
+        scalar($Class::Clone::TestB::roo[1]),
+        scalar($Class::Clone::TestB_Clone::roo[1]),
+        'Closure in array is not the same'
+    );
+    is(
+        scalar($Class::Clone::TestB_Clone::roo[1]->()),
+        scalar(\$Class::Clone::TestB_Clone::foo),
+        'Closure in array returns new packages variable'
+    );
+}
 
 diag('Failure conditions');
 eval {

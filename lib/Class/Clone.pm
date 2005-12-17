@@ -1,3 +1,5 @@
+#!perl
+
 package Class::Clone;
 
 use 5.006;
@@ -8,15 +10,15 @@ use B::Deparse;
 use Data::Dumper;
 use Carp;
 use Exporter qw(import);
-use File::Temp q(tempfile);
+use Clone qw(clone);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our @EXPORT_OK = qw(class_clone class_clone_code class_subclass);
 our %default_rules = (
-    'ARRAY'     =>  'copy',
-    'SCALAR'    =>  'copy',
-    'HASH'      =>  'copy',
-    'CODE'      =>  'copy',
+    'ARRAY'     =>  'clone',
+    'SCALAR'    =>  'clone',
+    'HASH'      =>  'clone',
+    'CODE'      =>  'clone',
 );
 
 return 1;
@@ -69,6 +71,8 @@ return 1;
         }
     }
     
+    sub _clone_CODE { _copy_CODE(@_); }
+    
     use strict 'refs';
 }
 
@@ -109,6 +113,8 @@ sub _clone_from_to {
                     push(@code, $rulemethod->($fromvar, $tovar));
                 } elsif($rules{$type} eq 'import') {
                     $to_syms->{$k} = $v;
+                } elsif($rules{$type} eq 'clone') {
+                    $to_syms->{$k} = clone($v);
                 } else {
                     croak "Can't handle $rules{$type} for $type ($fromvar -> $tovar)";
                 }

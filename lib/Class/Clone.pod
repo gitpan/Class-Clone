@@ -75,7 +75,7 @@ copying from will be appended to that.
 
 C<%what> is optional; if it is not specified, arrays, hashes, scalars,
 and code are cloned into C<$to>. If it is specified, the keys specify
-what to copy:
+what to clone, copy, or import:
 
 =over
 
@@ -93,14 +93,44 @@ The values specify how to copy that symbol table:
 
 =over
 
-=item clone
+=item copy
 
-Make an exact duplicate in C<$to>.
+Make a simple copy in C<$to>. This is the equivalent of
+
+  @From::Package::array = @To::Package::array
 
 If this is a subroutine (C<CODE>), an exact duplicate will only be made if the
 subroutine belongs to the package in C<$from>, unless C<$from>'s subroutine is
 an import itself, or comes from XS code. In those cases, the subroutine
 will be imported into C<$to>. 
+
+=item clone
+
+Make an exact duplicate in C<$to>, recursively copying every piece of a
+data structure using L<Clone::clone()|Clone>.
+
+C<CODE> references are treated the same way by C<clone> and C<copy>.
+
+B<NOTE>: If you are copying an array or hash, and that structure contains
+code references, the code references will be simply copied, the subs will
+*not* be cloned. This means that, for instance, closures inside arrays or
+hashes will still refer to variables in the package C<$from>. This is
+an unfortunate limitation of the L<Clone> package that I hope to get around
+in a future release. If you want to specify a hash or array of closures in
+your class, and have their variable/C<SUPER::> contexts move when they are
+cloned, you can place them in a subroutine like so:
+
+  sub closures {
+    return(
+      'foo' => sub { return $foo },
+      'bar' => sub { return $bar },
+    );
+  }
+
+Because a C<sub> is re-evaluated into the new class
+(see L</HOW SUBROUTINES ARE COPIED> below),
+the closures within the C<sub> will be re-evaluated in the new package's
+context as well.
 
 =item import
 

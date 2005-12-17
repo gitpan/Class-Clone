@@ -9,8 +9,13 @@ use Exporter qw(import);
 
 our $foo = ("buggyd");
 our %goo = ("lexical" => "awfulhak");
+our @roo = (\%goo, sub { return \$foo; });
 
 return 1;
+
+sub closure {
+    return sub { return \@roo; };
+}
 
 sub foo {
     my $self = shift;
