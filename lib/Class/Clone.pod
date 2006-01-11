@@ -209,6 +209,7 @@ Tyler "Crackerjack" MacDonald <japh@crackerjack.net>
 =head1 LICENSE
 
 Copyright 2005 Tyler MacDonald.
+
 This is free software; you may redistribute it under the same terms as perl itself.
 
 =cut

@@ -1,6 +1,10 @@
 Revision history for Perl extension Class::Clone.
 
-0.03  Sat Dev 17 14:45:00 2005
+0.04  Tue Jan 10 18:14:00 2006
+    - Support older versions of 'Exporter' by basing ourselves off of
+      it instead of just pulling in it's "import" function.
+
+0.03  Sat Dec 17 14:45:00 2005
     - Add support for doing deep recursive copies using the Clone package
       this is now the default, so that a Class::Clone'd package is truly
       separate from it's originator.
@@ -12,3 +16,4 @@ Revision history for Perl extension Class::Clone.
 0.01  Wed Dec  7 21:36:27 2005
 	- original version; created by h2xs 1.23 with options
 		-AXP -b 5.6.0 Class::Clone
+

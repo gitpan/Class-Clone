@@ -9,10 +9,11 @@ use Symbol::Table;
 use B::Deparse;
 use Data::Dumper;
 use Carp;
-use Exporter qw(import);
+use Exporter;
 use Clone qw(clone);
+use base q(Exporter);
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 our @EXPORT_OK = qw(class_clone class_clone_code class_subclass);
 our %default_rules = (
     'ARRAY'     =>  'clone',

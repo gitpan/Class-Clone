@@ -10,6 +10,7 @@ WriteMakefile(
         'Symbol::Table' =>  1.01,
         'B::Deparse'    =>  0.59,
         'Clone'         =>  0.16,
+        'Exporter'      =>  0.01,
     },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Class/Clone.pod', # retrieve abstract from module
