@@ -5,6 +5,7 @@ package Class::Clone::Test;
 use strict;
 use warnings;
 use Test::More;
+use Exporter;
 use base q(Exporter);
 
 use Class::Clone::TestB;

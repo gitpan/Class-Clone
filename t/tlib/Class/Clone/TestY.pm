@@ -4,9 +4,11 @@ package Class::Clone::TestY;
 
 use strict;
 use warnings;
-use Exporter qw(import);
+use Exporter;
+use Class::Clone::TestX;
+use base qw(Class::Clone::TestX Exporter);
+
 our @EXPORT_OK = qw(zoo);
-use base q(Class::Clone::TestX);
 
 return 1;
 

@@ -1,5 +1,12 @@
 Revision history for Perl extension Class::Clone.
 
+0.05  Sat Jan 21 12:41:00 2006
+    - Support older versions of 'Exporter' by basing ourselves off of
+      it instead of just pulling in it's "import" function.
+      I did this to the actual package in 0.04, but forgot to do it
+      to the unit tests as well. D'oh! I'm hoping now that this is fixed
+      in the unit tests, we'll get a nice shiny PASS on ppm.activestate.com.
+
 0.04  Tue Jan 10 18:14:00 2006
     - Support older versions of 'Exporter' by basing ourselves off of
       it instead of just pulling in it's "import" function.
@@ -16,4 +23,3 @@ Revision history for Perl extension Class::Clone.
 0.01  Wed Dec  7 21:36:27 2005
 	- original version; created by h2xs 1.23 with options
 		-AXP -b 5.6.0 Class::Clone
-

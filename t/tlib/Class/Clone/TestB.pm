@@ -4,8 +4,8 @@ package Class::Clone::TestB;
 
 use strict;
 use warnings;
-use base q(Class::Clone::TestA);
-use Exporter qw(import);
+use Exporter;
+use base qw(Class::Clone::TestA Exporter);
 
 our $foo = ("buggyd");
 our %goo = ("lexical" => "awfulhak");
