@@ -1,14 +1,25 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Class-Clone
-version:      0.05
-version_from: lib/Class/Clone.pm
-installdirs:  site
+--- #YAML:1.0
+name:               Class-Clone
+version:            0.06
+abstract:           Create a subclass or a copy of a class on-the-fly
+author:
+    - Tyler MacDonald <japh@crackerjack.net>
+license:            unknown
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-    B::Deparse:                    0.59
-    Clone:                         0.16
-    Exporter:                      0.01
-    Symbol::Table:                 1.01
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+    B::Deparse:     0.59
+    Clone:          0.16
+    Exporter:       0.01
+    Symbol::Table:  1.01
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.55_02
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4

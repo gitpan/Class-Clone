@@ -1,5 +1,8 @@
 Revision history for Perl extension Class::Clone.
 
+0.06  Tue Jan 8 10:57:44 2012
+    - Resurrect module for DBIx::Migration::Directories
+
 0.05  Sat Jan 21 12:41:00 2006
     - Support older versions of 'Exporter' by basing ourselves off of
       it instead of just pulling in it's "import" function.
